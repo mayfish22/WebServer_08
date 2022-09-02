@@ -12,7 +12,7 @@
             {
                 var categoryID = $"menu{item.Entity.ID}";
                 //判斷是否收起
-                var isCollapsed_Parent = !(Model.CurrentPage.ID == item.Entity.ID || Model.CurrentPage.IDs.Contains(item.Entity.ID));
+                var isCollapsed_Parent = Model.CurrentPage != null && !(Model.CurrentPage.ID == item.Entity.ID || Model.CurrentPage.IDs.Contains(item.Entity.ID));
                 var url_Parent = string.Empty;
                 if(!string.IsNullOrEmpty(item.Entity.Controller) 
                     || !string.IsNullOrEmpty(item.Entity.Action))
@@ -22,7 +22,7 @@
                 <li class="nav-item">
                     @if (!item.ChildNodes.Any())
                     {
-                        @if(item.Entity.IDs.Contains(Model.CurrentPage.ID))
+                        @if(Model.CurrentPage != null && item.Entity.IDs.Contains(Model.CurrentPage.ID))
                         {
                             //有包含, 變色
                         <a class="nav-link has-arrow active text-info" href="@url_Parent">
@@ -56,7 +56,7 @@
                                 @foreach(var subItem in item.ChildNodes.Where(s=>s.Entity.IsEnabled == 1).OrderBy(s=>s.Entity.Seq))
                                 {
                                     var url = $"/{(subItem.Entity.Controller ?? "")}/{(subItem.Entity.Action ?? "")}";
-                                    @if((Model.CurrentPage.ID == subItem.Entity.ID || Model.CurrentPage.IDs.Contains(subItem.Entity.ID)))
+                                    @if(Model.CurrentPage != null && (Model.CurrentPage.ID == subItem.Entity.ID || Model.CurrentPage.IDs.Contains(subItem.Entity.ID)))
                                     {
                                     <li class="nav-item">
                                         <a class="nav-link text-info" href="@url">
